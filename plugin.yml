@@ -1,0 +1,29 @@
+name: TradePlguin
+main: me.traox.tradeplugin.Events
+description: Trade plugin
+version: '1.3.0'
+author: TraoX
+depend: [ProtocolLib, Vault]
+softdepend: []
+
+commands:
+  trade:
+    description: Sends a trade to a player
+    usage: /trade
+    aliases: [trade]
+  toggletrading:
+    description: disables/enables the ability for players to trade
+    usage: /toggletrading
+    aliases: [toggletrading]
+  edittrade:
+    description: allows you to edit the trade menu
+    usage: /edittrade
+    aliases: [edittrade]
+
+permissions:
+  tradeplugin.use.toggletrading:
+    description: permission to use /toggletrading
+    default: op
+  tradeplugin.use.edittrade:
+    description: permission to use /toggletrading
+    default: op
