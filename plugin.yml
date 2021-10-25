@@ -1,7 +1,7 @@
-name: TradePlguin
+name: SimpleTrading
 main: me.traox.tradeplugin.Events
-description: Trade plugin
-version: '1.3.0'
+description: Simple Trading
+version: '1.3.1'
 author: TraoX
 depend: [ProtocolLib, Vault]
 softdepend: []
@@ -19,6 +19,10 @@ commands:
     description: allows you to edit the trade menu
     usage: /edittrade
     aliases: [edittrade]
+  blacklisttradeslot:
+    description: adds a specific slot in your inventory to the trade blacklist.
+    usage: /blacklisttradeslot
+    aliases: [blacklisttradeslot]
 
 permissions:
   tradeplugin.use.toggletrading:
@@ -26,4 +30,7 @@ permissions:
     default: op
   tradeplugin.use.edittrade:
     description: permission to use /toggletrading
+    default: op
+  tradeplugin.use.blacklisttradeslot:
+    description: permission to use /blacklisttradeslot
     default: op

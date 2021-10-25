@@ -1,18 +1,14 @@
 package me.traox.tradeplugin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -33,6 +29,7 @@ public class Commands implements CommandExecutor, Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getCommand("toggletrading").setExecutor(this);
         plugin.getCommand("edittrade").setExecutor(this);
+        plugin.getCommand("blacklisttradeslot").setExecutor(this);
     }
 	
 	@Override
@@ -63,6 +60,87 @@ public class Commands implements CommandExecutor, Listener {
 			if (sender.hasPermission("tradeplugin.use.edittrade"))
 			{
 				editTrade.editTrade(((Player)sender));
+			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+			}
+		}
+		if (label.equalsIgnoreCase("blacklisttradeslot"))
+		{
+			if (sender.hasPermission("tradeplugin.use.blacklisttradeslot"))
+			{
+				if (args.length == 2)
+				{
+					if (args[0].equalsIgnoreCase("add"))
+					{
+						int slot = 0;
+						try {
+							slot = Integer.parseInt(args[1]);
+						}
+						catch (Exception e)
+						{
+							sender.sendMessage(ChatColor.RED + "That is not a valid slot!");
+						}
+						if (slot > 35 || slot < 0)
+						{
+							sender.sendMessage(ChatColor.RED + "That is not a valid slot!");
+						}
+						else
+						{
+							List<Integer> slots = config.contains("blacklistedtradeslots") ? config.getIntegerList("blacklistedtradeslots"): new ArrayList<Integer>();
+							if (!slots.contains(slot))
+							{
+								slots.add(slot);
+								config.set("blacklistedtradeslots", slots);
+								sender.sendMessage(ChatColor.GREEN + "Added slot " + slot  + " to the blacklist.");
+								plugin.saveConfig();
+							}
+							else
+							{
+								sender.sendMessage(ChatColor.RED + "This slot has already been blacklisted!");
+							}
+						}
+					}
+					else if (args[0].equalsIgnoreCase("remove"))
+					{
+						int slot = 0;
+						try {
+							slot = Integer.parseInt(args[1]);
+						}
+						catch (Exception e)
+						{
+							sender.sendMessage(ChatColor.RED + "That is not a valid slot!");
+						}
+						if (slot > 35 || slot < 0)
+						{
+							sender.sendMessage(ChatColor.RED + "That is not a valid slot!");
+						}
+						else
+						{
+							List<Integer> slots = config.contains("blacklistedtradeslots") ? config.getIntegerList("blacklistedtradeslots"): new ArrayList<Integer>();
+							if (slots.contains(slot))
+							{
+								slots.remove(slot);
+								config.set("blacklistedtradeslots", slots);
+								sender.sendMessage(ChatColor.GREEN + "Removed slot " + slot  + " to the blacklist.");
+								plugin.saveConfig();
+							}
+							else
+							{
+								sender.sendMessage(ChatColor.RED + "That slot is not currently on the blacklist!");
+							}
+						}
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.RED + "Please use the valid command format \"/blacklisttradeslot (add/remove) (slot)\"!");
+					}
+				}
+				else if (args.length == 1)
+				{
+					sender.sendMessage(ChatColor.RED + "Please use the valid command format \"/blacklisttradeslot (add/remove) (slot)\"!");
+				}
 			}
 			else
 			{

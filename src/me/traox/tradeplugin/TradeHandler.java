@@ -890,13 +890,33 @@ public final class TradeHandler implements CommandExecutor, Listener {
 			    						{
 				    						if (Bukkit.getPlayer(traders.get(e.getWhoClicked().getUniqueId())).getOpenInventory().getTitle().equalsIgnoreCase("trade"))
 				    						{
-					    						((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ITEM_PICKUP, 1, 1);
-					        					Bukkit.getPlayer(traders.get(e.getWhoClicked().getUniqueId())).playSound(Bukkit.getPlayer(traders.get(e.getWhoClicked().getUniqueId())).getLocation(), Sound.ITEM_PICKUP, 1, 1);
-					    						
-					    						items.add(e.getClickedInventory().getItem(e.getSlot()));
-					    						offeredItems.replace(e.getWhoClicked().getUniqueId(), items);
-					    						e.getWhoClicked().getInventory().setItem(e.getSlot(), new ItemStack(Material.AIR));
-					    						updateTradeMenu((Player)e.getWhoClicked(), Bukkit.getPlayer(tradeReqs.get(((Player)e.getWhoClicked()).getUniqueId())), items);
+				    							if (config.contains("blacklistedtradeslots"))
+				    							{
+				    								if (config.getIntegerList("blacklistedtradeslots").contains(e.getSlot()))
+				    								{
+				    									e.getWhoClicked().sendMessage(ChatColor.RED + "You cannot trade this item!");
+				    								}
+				    								else
+				    								{
+				    									((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ITEM_PICKUP, 1, 1);
+							        					Bukkit.getPlayer(traders.get(e.getWhoClicked().getUniqueId())).playSound(Bukkit.getPlayer(traders.get(e.getWhoClicked().getUniqueId())).getLocation(), Sound.ITEM_PICKUP, 1, 1);
+							    						
+							    						items.add(e.getClickedInventory().getItem(e.getSlot()));
+							    						offeredItems.replace(e.getWhoClicked().getUniqueId(), items);
+							    						e.getWhoClicked().getInventory().setItem(e.getSlot(), new ItemStack(Material.AIR));
+							    						updateTradeMenu((Player)e.getWhoClicked(), Bukkit.getPlayer(tradeReqs.get(((Player)e.getWhoClicked()).getUniqueId())), items);
+				    								}
+				    							}
+				    							else
+				    							{
+						    						((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ITEM_PICKUP, 1, 1);
+						        					Bukkit.getPlayer(traders.get(e.getWhoClicked().getUniqueId())).playSound(Bukkit.getPlayer(traders.get(e.getWhoClicked().getUniqueId())).getLocation(), Sound.ITEM_PICKUP, 1, 1);
+						    						
+						    						items.add(e.getClickedInventory().getItem(e.getSlot()));
+						    						offeredItems.replace(e.getWhoClicked().getUniqueId(), items);
+						    						e.getWhoClicked().getInventory().setItem(e.getSlot(), new ItemStack(Material.AIR));
+						    						updateTradeMenu((Player)e.getWhoClicked(), Bukkit.getPlayer(tradeReqs.get(((Player)e.getWhoClicked()).getUniqueId())), items);
+				    							}
 				    						}
 			    						}
 		    						}
